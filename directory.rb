@@ -1,3 +1,6 @@
+#set var for student count
+student_count = 11
+
 #print student list
 puts "The students of Villains Academy"
 puts "-------------"
@@ -13,7 +16,5 @@ puts "The Joker"
 puts "Joffrey Baratheon"
 puts "Norman Bates"
 
-#output student str + student count with print instead of puts
-print "Overall we have "
-print 11
-puts " epic students!"
+#output student count as interpolated string
+puts "Overall we have #{student_count} epic students!"
