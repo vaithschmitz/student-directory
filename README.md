@@ -1,0 +1,1 @@
+The student-directory script allows the user to manage the students enrolled at Villains Academy.
