@@ -1,9 +1,3 @@
-
-#intro
-puts "The students of Villains Academy"
-puts "-------------"
-
-#list of students
 students = [
 "Dr. Hannibal Lecter",
 "Darth Vader",
@@ -18,8 +12,19 @@ students = [
 "Norman Bates"
 ]
 
-#print student names
-students.each { |student| puts student}
+def print_header 
+  puts "The students of Villains Academy"
+  puts "-------------"
+end
 
-#output student count as interpolated string
-puts "Overall we have #{students.count} epic students!"
+def print_names(names)
+  names.each { |name| puts name}
+end
+
+def print_footer(names) 
+  puts "Overall we have #{names.count} epic students!"
+end
+
+print_header
+print_names(students)
+print_footer(students)
