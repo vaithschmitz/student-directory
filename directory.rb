@@ -6,12 +6,17 @@ def input_students
   # get the first name
   name = gets.chomp
   # while the name is not empty, repeat this code
+  puts "What's #{name}'s favorite food?"
+  food = gets.chomp
   while !name.empty? do 
     # add the student hash to the array
-    students << {name: name, cohort: :november}
+    students << {name: name, food: food, cohort: :november}
     puts "Now we have #{students.count} students"
-    # get another name from user
-    name = gets.chomp
+    puts "Who else is in the cohort?"
+    name = gets.chomp 
+      puts "What's #{name}'s favorite food?"
+      food = gets.chomp
+    end
   end
   # return the array of students
   students
@@ -30,6 +35,7 @@ def print(students)
 
   puts "What's the first letter of students you want to see?"
   first_letter = gets.chomp
+    #make global var to store students with letter based on user_input
     $letter_students = []
     students.map { |student| if student[:name].split("")[0] == first_letter then $letter_students << student end}
 
@@ -38,21 +44,22 @@ def print(students)
 
   # print only students with first letter based on user input
   if answer_letter != "all" && answer_long == "all"
-    $letter_students.map { |student| puts "#{student[:name]} is in the #{student[:cohort]} cohort!"} 
+    $letter_students.map { |student| puts "#{student[:name]} loves #{student[:food]} and is in the #{student[:cohort]} cohort!"} 
   
   # print all names but only if chars < 12
   elsif answer_letter == "all" && answer_long != "all" 
-    students.map { |student| if student[:name].split("").length < 12 then puts "#{student[:name]} is in the #{student[:cohort]} cohort" end}
+    students.map { |student| if student[:name].split("").length < 12 then puts "#{student[:name]} loves #{student[:food]} and is in the #{student[:cohort]} cohort" end}
 
   # print only user-inputted first letter names with chars < 12
   elsif 
     answer_letter != "all" && answer_long != "all"
-    $letter_students.map { |student| if student[:name].split("").length < 12 then puts "#{student[:name]} is in the #{student[:cohort]} cohort" end}
+    $letter_students.map { |student| if student[:name].split("").length < 12 then puts "#{student[:name]} loves #{student[:food]} and is in the #{student[:cohort]} cohort" end}
 
   # print all students regardless
   else
     students.each_with_index { |student, index| 
-    puts "#{index+1}. #{student[:name]} is in the #{student[:cohort]} cohort!"}
+    puts "#{index+1}. #{student[:name]} loves #{student[:food]} and
+     is in the #{student[:cohort]} cohort!"}
 
   end
 end
