@@ -63,32 +63,36 @@ def print_student_list
   @students.map{ |x| if x[:cohort] == answer_cohort then cohort_list << x end}
   cohort_list.map {|student| puts "#{student[:name]} loves \n#{student[:food]}"}
 
-  puts "Do you want to see all students or only those starting with a specific letter? (Please enter all for all)"
-  answer_letter = gets.chomp
-
-  if answer_letter != "all"
-    puts "What's the first letter of students you want to see?"
-    first_letter = gets.chomp.capitalize
-    # make global var to store students with letter based on user_input
-    letter_students = []
-    cohort_list.map { |student| if student[:name].split("")[0] == first_letter then letter_students << student end}
-    puts letter_students.map {|student| puts "#{student[:name]} loves \n#{student[:food]}"}
-  end
-
 end
 
 def print_footer
-  if @gstudents.count == 1 
+  if @students.count == 1 
     puts "We have 1 epic student!" 
   else  
-    puts "Overall we have #{@students.count} epic students!"
+    puts "Overall we have #{@students.length} epic students!"
   end
 end
+
+def save_students
+  # open the file for writing
+  file = File.open("students.csv", "w")
+  # iterate over @students
+  @students.each do |student| 
+    student_data = [student[:name], student[:cohort], student[:food]]
+    # join the info about student and save as csv line
+    csv_line = student_data.join(",")
+    # puts csv line created above to file
+    file.puts csv_line
+    end
+  file.close
+end
+
 
 # shows menu of user options for all program features
 def print_menu
   puts "Press 1 To Input The Student"
   puts "Press 2 To Show The Students"
+  puts "Press 3 To Save The List To File"
   puts "Press 9 To Exit"
 end
 
@@ -105,6 +109,8 @@ def process(selection)
       input_students
     when "2"
       show_students
+    when "3"
+      save_students
     when "9"
       exit
     else 
@@ -119,4 +125,21 @@ def interactive_menu
   end
 end
 
+
 interactive_menu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
