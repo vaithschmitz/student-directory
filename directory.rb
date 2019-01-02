@@ -1,7 +1,9 @@
+# instance var for use across all methods
+@students = []
+
+# allows input of students
 def input_students
   puts "Please enter the names of the students"
-  # create an empty array
-  $students = []
 
   # get the first name
   name = gets.chomp.capitalize
@@ -23,15 +25,15 @@ def input_students
   while !name.empty? do 
 
     # add the student hash to the array
-    $students << {name: name, cohort: cohort.to_sym, food: food}
+    @students << {name: name, cohort: cohort.to_sym, food: food}
     
-    if $students.length == 1
+    if @students.length == 1
       puts "Now we have 1 student"
     else
-      puts "Now we have #{$students.length} students"
+      puts "Now we have #{@students.length} students"
     end
 
-    puts "Who else is in the cohort?"
+    puts "Which other students will attend Villains Academy?"
     
     name = gets.chomp.capitalize
       # break loop if no input
@@ -43,25 +45,22 @@ def input_students
     puts "What's #{name}'s favorite food?"
     food = gets.chomp.capitalize.rjust(15)
     end
-  
-  # return the array of students
-  return $students
 end
 
 
 def print_header 
-  puts "The students of Villains Academy"
-  puts "-------------"
+  puts "The students of Villains Academy".center(15)
+  puts "-------------".center(30)
 end
 
-def print(students)
+def print_student_list
 
   # create new array for output sorted by cohort
   cohort_list = Array.new
   puts "Which cohort do you want to see?"
   answer_cohort = gets.chomp.capitalize.to_sym
   
-  $students.map{ |x| if x[:cohort] == answer_cohort then cohort_list << x end}
+  @students.map{ |x| if x[:cohort] == answer_cohort then cohort_list << x end}
   cohort_list.map {|student| puts "#{student[:name]} loves \n#{student[:food]}"}
 
   puts "Do you want to see all students or only those starting with a specific letter? (Please enter all for all)"
@@ -78,15 +77,46 @@ def print(students)
 
 end
 
-def print_footer(students) 
-  if students.count == 1 
-    puts "We have #{students.count} epic student!" 
+def print_footer
+  if @gstudents.count == 1 
+    puts "We have 1 epic student!" 
   else  
-    puts "Overall we have #{students.count} epic students!"
+    puts "Overall we have #{@students.count} epic students!"
   end
 end
 
-students = input_students
-print_header
-print(students)
-print_footer(students)
+# shows menu of user options for all program features
+def print_menu
+  puts "Press 1 To Input The Student"
+  puts "Press 2 To Show The Students"
+  puts "Press 9 To Exit"
+end
+
+# shows 
+def show_students
+  print_header
+  print_student_list
+  print_footer
+end
+
+def process(selection)
+  case selection
+    when "1"
+      input_students
+    when "2"
+      show_students
+    when "9"
+      exit
+    else 
+      puts "Please Enter One Of The Following Options"
+  end
+end
+
+def interactive_menu
+  loop do
+    print_menu
+    process(gets.chomp)
+  end
+end
+
+interactive_menu
