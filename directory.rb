@@ -6,7 +6,7 @@ def input_students
   puts "Please enter the names of the students"
 
   # get the first name
-  name = gets.chomp.capitalize
+  name = STDIN.gets.chomp.capitalize
     # exit CLI if no input
     if name.empty? then exit end
 
@@ -14,13 +14,13 @@ def input_students
   puts "What cohort will #{name} be in?"
 
   # ask for cohort, turn to sym 
-  cohort = gets.chomp.capitalize.to_sym
+  cohort = STDIN.gets.chomp.capitalize.to_sym
     # if input empty > cohort TBD
     if cohort.empty? then cohort = :TBD end
   
   # ask for food
   puts "What's #{name}'s favorite food?"
-  food = gets.chomp.capitalize.rjust(15)
+  food = STDIN.gets.chomp.capitalize.rjust(15)
   
   while !name.empty? do 
 
@@ -35,15 +35,15 @@ def input_students
 
     puts "Which other students will attend Villains Academy?"
     
-    name = gets.chomp.capitalize
+    name = STDIN.gets.chomp.capitalize
       # break loop if no input
       if name.empty? then break end
 
     puts "What cohort will #{name} be in?"
-    cohort = gets.chomp.capitalize.to_sym
+    cohort = STDIN.gets.chomp.capitalize.to_sym
       if cohort.empty? then cohort = :TBD end
     puts "What's #{name}'s favorite food?"
-    food = gets.chomp.capitalize.rjust(15)
+    food = STDIN.gets.chomp.capitalize.rjust(15)
     end
 end
 
@@ -87,15 +87,26 @@ def save_students
     file.close
 end
 
-
-def load_students
+def load_students(filename = "students.csv") # set default value students.csv if no arg specified
   # open file to load, set permission to read
-  file = File.open("students.csv", "r")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort, food = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym, food: food}
   end
   file.close
+end
+
+def try_load_students
+  filename = ARGV.first # first arg from CLI
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) # if it exists
+    load_students(filename)
+      puts "Loaded #{@students.count} from #{filename}"
+  else # if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist" 
+    exit # exit program
+  end
 end
 
 # shows menu of user options for all program features
@@ -135,11 +146,11 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
-
+try_load_students
 interactive_menu
 
 
