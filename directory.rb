@@ -74,7 +74,7 @@ def print_footer
 end
 
 def save_students
-  # open the file for writing
+  # open the file for writing, the second argument specifies permissions r,w,x
   file = File.open("students.csv", "w")
   # iterate over @students
   @students.each do |student| 
@@ -84,15 +84,26 @@ def save_students
     # puts csv line created above to file
     file.puts csv_line
     end
-  file.close
+    file.close
 end
 
+
+def load_students
+  # open file to load, set permission to read
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+  name, cohort, food = line.chomp.split(',')
+    @students << {name: name, cohort: cohort.to_sym, food: food}
+  end
+  file.close
+end
 
 # shows menu of user options for all program features
 def print_menu
   puts "Press 1 To Input The Student"
   puts "Press 2 To Show The Students"
   puts "Press 3 To Save The List To File"
+  puts "Press 4 To Load Students From Local File"
   puts "Press 9 To Exit"
 end
 
@@ -111,7 +122,10 @@ def process(selection)
       show_students
     when "3"
       save_students
+    when "4"
+      load_students
     when "9"
+      puts "Have A Wonderful Day"
       exit
     else 
       puts "Please Enter One Of The Following Options"
@@ -127,14 +141,6 @@ end
 
 
 interactive_menu
-
-
-
-
-
-
-
-
 
 
 
