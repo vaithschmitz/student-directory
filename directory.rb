@@ -5,6 +5,8 @@ def input_students
 
   # get the first name
   name = gets.chomp.capitalize
+    # exit CLI if no input
+    if name.empty? then exit end
 
   # while the name is not empty, repeat this code
   puts "What cohort will #{name} be in?"
@@ -16,7 +18,7 @@ def input_students
   
   # ask for food
   puts "What's #{name}'s favorite food?"
-  food = gets.chomp.capitalize
+  food = gets.chomp.capitalize.rjust(15)
   
   while !name.empty? do 
 
@@ -34,11 +36,12 @@ def input_students
     name = gets.chomp.capitalize
       # break loop if no input
       if name.empty? then break end
+
     puts "What cohort will #{name} be in?"
     cohort = gets.chomp.capitalize.to_sym
       if cohort.empty? then cohort = :TBD end
     puts "What's #{name}'s favorite food?"
-    food = gets.chomp.capitalize
+    food = gets.chomp.capitalize.rjust(15)
     end
   
   # return the array of students
@@ -59,7 +62,7 @@ def print(students)
   answer_cohort = gets.chomp.capitalize.to_sym
   
   $students.map{ |x| if x[:cohort] == answer_cohort then cohort_list << x end}
-  cohort_list.map {|student| puts "#{student[:name]} loves #{student[:food]}"}
+  cohort_list.map {|student| puts "#{student[:name]} loves \n#{student[:food]}"}
 
   puts "Do you want to see all students or only those starting with a specific letter? (Please enter all for all)"
   answer_letter = gets.chomp
@@ -70,7 +73,7 @@ def print(students)
     # make global var to store students with letter based on user_input
     letter_students = []
     cohort_list.map { |student| if student[:name].split("")[0] == first_letter then letter_students << student end}
-    puts letter_students.map {|student| puts "#{student[:name]} loves #{student[:food]}"}
+    puts letter_students.map {|student| puts "#{student[:name]} loves \n#{student[:food]}"}
   end
 
 end
