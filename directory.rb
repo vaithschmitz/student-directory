@@ -1,6 +1,12 @@
 # instance var for use across all methods
 @students = []
 
+# cal on 
+def add_student(name, cohort, food)
+  @students << {name: name, cohort: cohort.to_sym, food: food}
+end
+
+
 # allows input of students
 def input_students
   puts "Please enter the names of the students"
@@ -25,7 +31,7 @@ def input_students
   while !name.empty? do 
 
     # add the student hash to the array
-    @students << {name: name, cohort: cohort.to_sym, food: food}
+    add_student(name, cohort, food)
     
     if @students.length == 1
       puts "Now we have 1 student"
@@ -54,7 +60,6 @@ def print_header
 end
 
 def print_student_list
-
   # create new array for output sorted by cohort
   cohort_list = Array.new
   puts "Which cohort do you want to see?"
@@ -62,7 +67,6 @@ def print_student_list
   
   @students.map{ |x| if x[:cohort] == answer_cohort then cohort_list << x end}
   cohort_list.map {|student| puts "#{student[:name]} loves \n#{student[:food]}"}
-
 end
 
 def print_footer
@@ -92,7 +96,7 @@ def load_students(filename = "students.csv") # set default value students.csv if
   file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort, food = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym, food: food}
+  add_student(name, cohort, food)
   end
   file.close
 end
