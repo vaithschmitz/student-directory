@@ -1,7 +1,7 @@
 # instance var for use across all methods
 @students = []
 
-# cal on 
+# more efficient method calls
 def add_student(name, cohort, food)
   @students << {name: name, cohort: cohort.to_sym, food: food}
 end
@@ -132,6 +132,23 @@ def show_students
   print_footer
 end
 
+# giving input feedback
+def input_fb(selection)
+  case selection
+    when "1", "2"
+      "Input Accepted"
+    when "3"
+      "Students Have Been Saved To File"
+    when "4"
+      "Students Have Been Loaded From File"
+    when "9"  
+      "Input Accepted\nHave A Wonderful Day"
+    else
+      "Please Choose A Valid Option"
+  end
+end
+
+# take input from user
 def process(selection)
   case selection
     when "1"
@@ -143,11 +160,9 @@ def process(selection)
     when "4"
       load_students
     when "9"
-      puts "Have A Wonderful Day"
       exit
-    else 
-      puts "Please Enter One Of The Following Options"
   end
+  puts input_fb(selection)
 end
 
 def interactive_menu
