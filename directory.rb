@@ -77,9 +77,8 @@ def print_footer
   end
 end
 
-def save_students
-  # open the file for writing, the second argument specifies permissions r,w,x
-  file = File.open("students.csv", "w")
+# due to open conditionals in method save_students (look to refactor)
+def popularize_file(file)
   # iterate over @students
   @students.each do |student| 
     student_data = [student[:name], student[:cohort], student[:food]]
@@ -91,14 +90,50 @@ def save_students
     file.close
 end
 
-def load_students(filename = "students.csv") # set default value students.csv if no arg specified
-  # open file to load, set permission to read
-  file = File.open(filename, "r")
+def save_students
+  # check if user wants to name save 
+  puts "Do You Want To Name Your Save File? [Y/N]"
+  answer = STDIN.gets.chomp.capitalize
+  if answer == "Y" then puts "What Do You Want To Name Your Save File?"end
+  user_file = STDIN.gets.chomp 
+
+  # write to default save or user declared save file
+  if answer == "Y"
+    file = File.open(user_file + ".csv", "w")
+    popularize_file(file)
+  else
+    file = File.open("students.csv", "w")
+    popularize_file(file)
+  end
+end
+
+def load_to_file (file)
   file.readlines.each do |line|
   name, cohort, food = line.chomp.split(',')
   add_student(name, cohort, food)
   end
   file.close
+end
+
+def load_students(filename = "students.csv") # set default value students.csv if no arg specified
+  # check if user wants to name save 
+  puts "Do You Want To Load A Specific File? [Y/N]"
+  answer = STDIN.gets.chomp.capitalize
+  if answer == "Y" then puts "Which File Do You Want To Load?"end
+  user_file = STDIN.gets.chomp 
+
+  # write to default save or user declared save file
+  if answer == "Y"
+    file = File.open(user_file + ".csv", "r")
+    load_to_file (file)
+  elsif answer == "N"
+    file = File.open("students.csv", "r")
+    load_to_file (file)
+  elsif answer == "Y" && !File.file?(user_file + ".csv")
+    puts "This File Does Not Exist Yet. Loading Default Save"
+    file = File.open("students.csv", "r")
+    load_to_file (file)
+  end
 end
 
 def try_load_students
@@ -109,10 +144,10 @@ def try_load_students
   end 
   if File.exists?(filename) # if it exists
     load_students(filename)
-      puts "Loaded #{@students.count} from #{filename}"
+    puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
-     puts "Sorry, #{filename} doesn't exist."
-     exit 
+    puts "Sorry, #{filename} doesn't exist."
+    exit 
   end
 end
 
@@ -176,7 +211,7 @@ try_load_students
 interactive_menu
 
 
-
+# refactors -> automatically create gitignores for new saves
 
 
 
