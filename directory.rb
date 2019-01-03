@@ -103,13 +103,16 @@ end
 
 def try_load_students
   filename = ARGV.first # first arg from CLI
-  return if filename.nil? # get out of the method if it isn't given
+  if filename.nil? # if no file specified load from students.csv
+    puts "Loaded Save From Default File"
+    return load_students 
+  end 
   if File.exists?(filename) # if it exists
     load_students(filename)
       puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
-    puts "Sorry, #{filename} doesn't exist" 
-    exit # exit program
+     puts "Sorry, #{filename} doesn't exist."
+     exit 
   end
 end
 
