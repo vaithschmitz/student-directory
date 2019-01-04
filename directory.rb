@@ -100,33 +100,30 @@ def save_students
   end
 end
 
-def load_to_file (file) 
-  f = file.readlines.each do |line|
-  name, cohort, food = line.chomp.split(',')
-  add_student(name, cohort, food)
+def load_file (filename = "students.csv")
+  f = File.open(filename, "r") do |file|
+    f = file.readlines.each do |line|
+      name, cohort, food = line.chomp.split(',')
+      add_student(name, cohort, food)
+    end
   end
-  file.close
 end
-
 
 def load_students(filename = "students.csv") # set default value students.csv if no arg specified
   # check if user wants to name save 
-  puts "Do You Want To Load A Specific File? [Y/N]"
+  puts "Which File Do You Want To Load? Hit Enter For Default."
   answer = STDIN.gets.chomp.capitalize
-  if answer == "Y" then puts "Which File Do You Want To Load?"end
-  user_filename = STDIN.gets.chomp 
 
-  # write to default save or user declared save file
-  if answer == "Y"
-    file = File.open(user_filename + ".csv", "r")
-    load_to_file (file)
-  elsif answer == "N"
-    file = File.open("students.csv", "r")
-    load_to_file (file)
-  elsif answer == "Y" && !File.file?(user_file + ".csv")
-    puts "This File Does Not Exist Yet. Loading Default Save"
-    file = File.open("students.csv", "r")
-    load_to_file (file)
+  # write to user declared save file
+  if !answer.empty? && File.file?(answer + ".csv")
+    load_file (answer + ".csv")
+  # load default
+  elsif answer.empty?
+    load_file
+  # wrong file specified, load default
+  else
+    puts "This File Does Not Exist. Loading Default Save"
+    load_file
   end
 end
 
