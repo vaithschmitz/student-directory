@@ -107,7 +107,7 @@ def save_students
   end
 end
 
-def load_to_file (file)
+def load_to_file (file) 
   file.readlines.each do |line|
   name, cohort, food = line.chomp.split(',')
   add_student(name, cohort, food)
@@ -142,7 +142,7 @@ def try_load_students
     puts "Loaded Save From Default File"
     return load_students 
   end 
-  if File.exists?(filename) # if it exists
+  if File.file?(filename) # if it exists
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
@@ -206,6 +206,7 @@ def interactive_menu
     process(STDIN.gets.chomp)
   end
 end
+
 
 try_load_students
 interactive_menu
