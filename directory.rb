@@ -6,7 +6,6 @@ def add_student(name, cohort, food)
   @students << {name: name, cohort: cohort.to_sym, food: food}
 end
 
-
 # allows input of students
 def input_students
   puts "Please enter the names of the students"
@@ -40,7 +39,6 @@ def input_students
     end
 
     puts "Which other students will attend Villains Academy?"
-    
     name = STDIN.gets.chomp.capitalize
       # break loop if no input
       if name.empty? then break end
@@ -52,7 +50,6 @@ def input_students
     food = STDIN.gets.chomp.capitalize.rjust(15)
     end
 end
-
 
 def print_header 
   puts "The students of Villains Academy".center(15)
@@ -77,54 +74,51 @@ def print_footer
   end
 end
 
-# due to open conditionals in method save_students (look to refactor)
-def popularize_file(file)
-  # iterate over @students
-  @students.each do |student| 
-    student_data = [student[:name], student[:cohort], student[:food]]
-    # join the info about student and save as csv line
-    csv_line = student_data.join(",")
-    # puts csv line created above to file
-    file.puts csv_line
+def write_save(filename = "students.csv")
+  f = File.open(filename, "w") do |file| 
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort], student[:food]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
     end
-    file.close
+  end
 end
 
 def save_students
   # check if user wants to name save 
-  puts "Do You Want To Name Your Save File? [Y/N]"
-  answer = STDIN.gets.chomp.capitalize
-  if answer == "Y" then puts "What Do You Want To Name Your Save File?"end
-  user_file = STDIN.gets.chomp 
-
+  puts "If You Want To Name Your Save File, Enter Your Name. Else Just Hit Return."
+  answer = STDIN.gets.chomp
+  
   # write to default save or user declared save file
-  if answer == "Y"
-    file = File.open(user_file + ".csv", "w")
-    popularize_file(file)
+  if answer.empty? 
+    # if user wants to name savefile, pass input to write_save
+    write_save
+    puts "Saved To Default Save File."
   else
-    file = File.open("students.csv", "w")
-    popularize_file(file)
+    write_save(answer + ".csv")
+    puts "Saved To #{answer}."   
   end
 end
 
 def load_to_file (file) 
-  file.readlines.each do |line|
+  f = file.readlines.each do |line|
   name, cohort, food = line.chomp.split(',')
   add_student(name, cohort, food)
   end
   file.close
 end
 
+
 def load_students(filename = "students.csv") # set default value students.csv if no arg specified
   # check if user wants to name save 
   puts "Do You Want To Load A Specific File? [Y/N]"
   answer = STDIN.gets.chomp.capitalize
   if answer == "Y" then puts "Which File Do You Want To Load?"end
-  user_file = STDIN.gets.chomp 
+  user_filename = STDIN.gets.chomp 
 
   # write to default save or user declared save file
   if answer == "Y"
-    file = File.open(user_file + ".csv", "r")
+    file = File.open(user_filename + ".csv", "r")
     load_to_file (file)
   elsif answer == "N"
     file = File.open("students.csv", "r")
@@ -207,14 +201,8 @@ def interactive_menu
   end
 end
 
-
 try_load_students
 interactive_menu
 
 
 # refactors -> automatically create gitignores for new saves
-
-
-
-
-
