@@ -1,3 +1,5 @@
+require "CSV"
+
 # instance var for use across all methods
 @students = []
 
@@ -74,12 +76,11 @@ def print_footer
   end
 end
 
-def write_save(filename = "students.csv")
-  f = File.open(filename, "w") do |file| 
+# write to filing using CSV class
+def csv_write (filename = "students.csv")
+  CSV.open(filename, "w") do |row|
     @students.each do |student|
-      student_data = [student[:name], student[:cohort], student[:food]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
+      row << [student[:name], student[:cohort], student[:food]]
     end
   end
 end
@@ -92,20 +93,19 @@ def save_students
   # write to default save or user declared save file
   if answer.empty? 
     # if user wants to name savefile, pass input to write_save
-    write_save
+    csv_write
     puts "Saved To Default Save File."
   else
-    write_save(answer + ".csv")
+    csv_write(answer + ".csv")
     puts "Saved To #{answer}."   
   end
 end
 
+# read from file using CSV class
 def load_file (filename = "students.csv")
-  f = File.open(filename, "r") do |file|
-    f = file.readlines.each do |line|
-      name, cohort, food = line.chomp.split(',')
-      add_student(name, cohort, food)
-    end
+  CSV.foreach(filename) do |row|
+    name, cohort, food = row.map{ |element| element.chomp}
+    add_student(name, cohort, food)
   end
 end
 
@@ -130,7 +130,6 @@ end
 def try_load_students
   filename = ARGV.first # first arg from CLI
   if filename.nil? # if no file specified load from students.csv
-    puts "Loaded Save From Default File"
     return load_students 
   end 
   if File.file?(filename) # if it exists
@@ -185,6 +184,8 @@ def process(selection)
       save_students
     when "4"
       load_students
+    when "5"
+      methcheck
     when "9"
       exit
   end
