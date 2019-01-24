@@ -9,7 +9,7 @@
 | Print Back Students To Command Line  |
 | Save Entered Students To Local File  |
 | Load From Local File  |
-|  Not A Whole Lot More, Really |
+|  Read, Store And Manipulate As CSV |
 
 It's a directory for the students of Villains Academy, which lets users create list of students, including read/write from local files. 
 
